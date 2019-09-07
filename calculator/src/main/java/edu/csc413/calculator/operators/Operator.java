@@ -9,19 +9,19 @@ public abstract class Operator {
      * static: so that every class gets a share
      */
     private static HashMap<String, Operator> operators = new HashMap<>();
-
     /**
      * program automatically initializes HashMap
      * static block only runs once
      */
     static{
+        operators.put("(", new RightParenthesisOperator());
         operators.put("+", new AddOperator());
         operators.put("-", new SubtractOperator());
         operators.put("*", new MultiplyOperator());
         operators.put("/", new DivideOperator());
         operators.put("^", new PowerOperator());
+        operators.put(")", new LeftParenthesisOperator());
     }
-
     /**
      * used to get the priority of an operator
      *
@@ -30,7 +30,6 @@ public abstract class Operator {
     public abstract int priority();
 
     public abstract Operand execute(Operand op1, Operand op2);
-
     /**
      * determines if a given token is a valid operator.
      * @param token key of the operator that need to be checked
@@ -39,7 +38,6 @@ public abstract class Operator {
     public static boolean check(String token) {
         return operators.containsKey(token);
     }
-
     /**
      * used to retrieve an operator from our HashMap.
      * This will act as out publicly facing function,
