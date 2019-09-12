@@ -1,6 +1,4 @@
 package edu.csc413.calculator.evaluator;
-
-
 import edu.csc413.calculator.operators.Operator;
 
 import java.util.Stack;
@@ -10,7 +8,7 @@ public class Evaluator {
     private Stack<Operand> operandStack;
     private Stack<Operator> operatorStack;
     private StringTokenizer tokenizer;
-    private static final String DELIMITERS = "+-*^/ ";
+    private static final String DELIMITERS = "+-*^/() ";
 
     public Evaluator() {
         operandStack = new Stack<>();
@@ -37,29 +35,35 @@ public class Evaluator {
                         throw new RuntimeException("*****invalid token******");
                     }
 
+                    Operator newOperator = Operator.getOperator(token);
 
-                    // TODO Operator is abstract - these two lines will need to be fixed:
-                    // The Operator class should contain an instance of a HashMap,
-                    // and values will be instances of the Operators.  See Operator class
-                    // skeleton for an example.
-                    Operator newOperator = new Operator();
-
-                    while (operatorStack.peek().priority() >= newOperator.priority()) {
+                    while (!operatorStack.isEmpty() && operatorStack.peek().priority() >= newOperator.priority()) {
                         // note that when we eval the expression 1 - 2 we will
                         // push the 1 then the 2 and then do the subtraction operation
                         // This means that the first number to be popped is the
                         // second operand, not the first operand - see the following code
-                        Operator oldOpr = operatorStack.pop();
-                        Operand op2 = operandStack.pop();
-                        Operand op1 = operandStack.pop();
-                        operandStack.push(oldOpr.execute(op1, op2));
-                    }
+                        if (operatorStack.peek().priority() == 4) {
+                            operatorStack.pop();
+                        }
+                        else {
+                            Operator oldOpr = operatorStack.pop();
+                            Operand op2 = operandStack.pop();
+                            Operand op1 = operandStack.pop();
+                            operandStack.push(oldOpr.execute(op1, op2));
 
-                    operatorStack.push(newOperator);
-                }
+                        }
+                    }
+                operatorStack.push(newOperator);
             }
         }
+    }
 
+        while(!operatorStack.isEmpty()){
+            Operator oldOpr = operatorStack.pop();
+            Operand op2 = operandStack.pop();
+            Operand op1 = operandStack.pop();
+            operandStack.push(oldOpr.execute(op1, op2));
+        }
 
         // Control gets here when we've picked up all of the tokens; you must add
         // code to complete the evaluation - consider how the code given here
@@ -70,7 +74,6 @@ public class Evaluator {
         // that is, we should keep evaluating the operator stack until it is empty;
         // Suggestion: create a method that processes the operator stack until empty.
 
-        //Don't forget to change the return value!
-        return 0;
+        return operandStack.peek().getValue();
     }
 }

@@ -5,25 +5,26 @@ package edu.csc413.calculator.evaluator;
  * in a valid mathematical expression.
  */
 public class Operand {
+    private int num;
     /**
      * construct operand from string token.
      */
     public Operand(String token) {
-
+        this.num = Integer.parseInt(token);
     }
 
     /**
      * construct operand from integer
      */
     public Operand(int value) {
-
+        this.num = value;
     }
 
     /**
      * return value of operand
      */
     public int getValue() {
-        return 0;
+        return this.num;
     }
 
     /**
@@ -31,6 +32,11 @@ public class Operand {
      * operand.
      */
     public static boolean check(String token) {
-        return false;
+        try{
+            Integer.parseInt(token);
+            return true;
+        } catch(Exception notValid) {
+            return false;
+        }
     }
 }

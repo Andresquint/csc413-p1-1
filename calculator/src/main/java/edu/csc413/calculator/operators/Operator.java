@@ -47,8 +47,6 @@ public abstract class Operator {
      * @return reference to a Operator instance.
      */
     public static Operator getOperator(String token) {
-        if(operators.containsKey(token))
-            return operators.get(token);
-        return null;
+        return operators.get(token);
     }
 }

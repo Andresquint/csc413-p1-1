@@ -8,6 +8,7 @@ public class DivideOperator extends Operator{
     }
 
     public Operand execute(Operand op1, Operand op2){
+        if(op2.getValue()==0) throw new UnsupportedOperationException("Error: Can't divide by 0");
         Operand total = new Operand(op1.getValue()/op2.getValue());
         return total;
     }
