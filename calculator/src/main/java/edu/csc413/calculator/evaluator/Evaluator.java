@@ -8,6 +8,7 @@ public class Evaluator {
     private Stack<Operand> operandStack;
     private Stack<Operator> operatorStack;
     private StringTokenizer tokenizer;
+    //Add parenthesis as delimiters
     private static final String DELIMITERS = "+-*^/() ";
 
     public Evaluator() {
@@ -37,43 +38,59 @@ public class Evaluator {
 
                     Operator newOperator = Operator.getOperator(token);
 
-                    while (!operatorStack.isEmpty() && operatorStack.peek().priority() >= newOperator.priority()) {
-                        // note that when we eval the expression 1 - 2 we will
-                        // push the 1 then the 2 and then do the subtraction operation
-                        // This means that the first number to be popped is the
-                        // second operand, not the first operand - see the following code
-                        if (operatorStack.peek().priority() == 4) {
-                            operatorStack.pop();
+                    // If newOperator is a left parenthesis or if the stack is empty, add it to the stack
+                    if(newOperator.priority() == 0 || operatorStack.isEmpty()){
+                        operatorStack.push(newOperator);
+                    }
+                    // If stack is not empty
+                    else {
+                        // If newOperator is a right parenthesis, process stack until top of stack does not equal "("
+                        if (newOperator.priority() == -1){
+                            while(operatorStack.peek().priority() != 0){
+                                calculate();
+                            }
+                            // If top of stack equals "(", pop it from stack and ignore.
+                            if(operatorStack.peek().priority() == 0)
+                                operatorStack.pop();
                         }
+                        // If newOperator is not any of the parenthesis
                         else {
-                            Operator oldOpr = operatorStack.pop();
-                            Operand op2 = operandStack.pop();
-                            Operand op1 = operandStack.pop();
-                            operandStack.push(oldOpr.execute(op1, op2));
-
+                            // While the priority from the top of the stack is greater or equal than the newOperator's priority
+                            // process stack. Check if empty
+                            while (operatorStack.peek().priority() >= newOperator.priority()) {
+                                calculate();
+                                // After execution, if stack is empty, exit while loop to avoid EmptyStackException
+                                if (operatorStack.isEmpty())
+                                    break;
+                            }
+                            // Add newOperator to the stack
+                            operatorStack.push(newOperator);
                         }
                     }
-                operatorStack.push(newOperator);
+                }
             }
         }
+        // Iterate through stack until empty
+        emptyStack();
+
+        // Return the top value of operand stack and pop it from the stack
+        return operandStack.pop().getValue();
     }
-
+    // Private method to calculate expressions.
+    // Pop operator from operator stack, pop two values from operand stack.
+    // Finally execute operation and push result to operand stack
+    private void calculate(){
+        Operator oldOpr = operatorStack.pop();
+        Operand op2 = operandStack.pop();
+        Operand op1 = operandStack.pop();
+        operandStack.push(oldOpr.execute(op1, op2));
+    }
+    // Method that processes the operator stack until empty
+    private void emptyStack(){
         while(!operatorStack.isEmpty()){
-            Operator oldOpr = operatorStack.pop();
-            Operand op2 = operandStack.pop();
-            Operand op1 = operandStack.pop();
-            operandStack.push(oldOpr.execute(op1, op2));
+            calculate();
         }
-
-        // Control gets here when we've picked up all of the tokens; you must add
-        // code to complete the evaluation - consider how the code given here
-        // will evaluate the expression 1+2*3
-        // When we have no more tokens to scan, the operand stack will contain 1 2
-        // and the operator stack will have + * with 2 and * on the top;
-        // In order to complete the evaluation we must empty the stacks,
-        // that is, we should keep evaluating the operator stack until it is empty;
-        // Suggestion: create a method that processes the operator stack until empty.
-
-        return operandStack.peek().getValue();
     }
 }
+
+
