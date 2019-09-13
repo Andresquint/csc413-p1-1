@@ -40,14 +40,14 @@ public class Evaluator {
 
                     // If newOperator is a left parenthesis or if the stack is empty, add it to the stack
                     // Following logic flow from algorithm http://csis.pace.edu/~murthy/ProgrammingProblems/16_Evaluation_of_infix_expressions
-                    if(newOperator.priority() == 0 || operatorStack.isEmpty()){
+                    if(newOperator.priority() == -1 || operatorStack.isEmpty()){
                         operatorStack.push(newOperator);
                     }
                     // If stack is not empty
                     else {
                         // If newOperator is a right parenthesis, process stack until top of stack does not equal "("
-                        if (newOperator.priority() == -1){
-                            while(operatorStack.peek().priority() != 0){
+                        if (newOperator.priority() == 0){
+                            while(operatorStack.peek().priority() != -1){
                                 calculate();
                             }
                             // Top of stack equals "(". Pop it from stack and ignore.
