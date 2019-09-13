@@ -71,7 +71,7 @@ public class EvaluatorUI extends JFrame implements ActionListener {
      *                    button is pressed.
      */
     public void actionPerformed(ActionEvent eventObject) {
-        
+
 
     }
 }

@@ -49,9 +49,8 @@ public class Evaluator {
                             while(operatorStack.peek().priority() != 0){
                                 calculate();
                             }
-                            // If top of stack equals "(", pop it from stack and ignore.
-                            if(operatorStack.peek().priority() == 0)
-                                operatorStack.pop();
+                            // Top of stack equals "(". Pop it from stack and ignore.
+                            operatorStack.pop();
                         }
                         // If newOperator is not any of the parenthesis
                         else {
