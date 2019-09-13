@@ -60,7 +60,6 @@ public class Evaluator {
                     } else {
                         operatorStack.push(newOperator);
                     }
-
                 }
             }
         }
