@@ -40,23 +40,14 @@ public class Evaluator {
 
                     // If newOperator is a left parenthesis or if the stack is empty, add it to the stack
                     // Following logic flow from algorithm http://csis.pace.edu/~murthy/ProgrammingProblems/16_Evaluation_of_infix_expressions
-                    if(newOperator.priority() == -1 || operatorStack.isEmpty()){
-                        operatorStack.push(newOperator);
-                    }
-                    // If stack is not empty
-                    else {
-                        // If newOperator is a right parenthesis, process stack until top of stack does not equal "("
-                        if (newOperator.priority() == 0){
-                            while(operatorStack.peek().priority() != -1){
+                    if (!operatorStack.isEmpty() && newOperator.priority() != -1) {
+                        if (newOperator.priority() == 0) {
+                            while (operatorStack.peek().priority() != -1) {
                                 calculate();
                             }
                             // Top of stack equals "(". Pop it from stack and ignore.
                             operatorStack.pop();
-                        }
-                        // If newOperator is not any of the parenthesis
-                        else {
-                            // While the priority from the top of the stack is greater or equal than the newOperator's priority
-                            // process stack. Check if empty
+                        } else {
                             while (operatorStack.peek().priority() >= newOperator.priority()) {
                                 calculate();
                                 // After execution, if stack is empty, exit while loop to avoid EmptyStackException
@@ -66,10 +57,14 @@ public class Evaluator {
                             // Add newOperator to the stack
                             operatorStack.push(newOperator);
                         }
+                    } else {
+                        operatorStack.push(newOperator);
                     }
+
                 }
             }
         }
+
         // Iterate through stack until empty
         emptyStack();
 
