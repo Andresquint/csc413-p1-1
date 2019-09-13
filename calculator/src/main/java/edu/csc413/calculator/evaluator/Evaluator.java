@@ -39,6 +39,7 @@ public class Evaluator {
                     Operator newOperator = Operator.getOperator(token);
 
                     // If newOperator is a left parenthesis or if the stack is empty, add it to the stack
+                    // Following logic flow from algorithm http://csis.pace.edu/~murthy/ProgrammingProblems/16_Evaluation_of_infix_expressions
                     if(newOperator.priority() == 0 || operatorStack.isEmpty()){
                         operatorStack.push(newOperator);
                     }

@@ -9,12 +9,13 @@ public class EvaluatorUI extends JFrame implements ActionListener {
 
     private TextField txField = new TextField();
     private Panel buttonPanel = new Panel();
+    Evaluator expressionEvaluator = new Evaluator();
 
     // total of 20 buttons on the calculator,
     // numbered from left to right, top to bottom
     // bText[] array contains the text for corresponding buttons
     private static final String[] bText = {
-            "7", "8", "9", "+", "4", "5", "6", "- ", "1", "2", "3",
+            "7", "8", "9", "+", "4", "5", "6", "-", "1", "2", "3",
             "*", "0", "^", "=", "/", "(", ")", "C", "CE"
     };
 
@@ -71,7 +72,52 @@ public class EvaluatorUI extends JFrame implements ActionListener {
      *                    button is pressed.
      */
     public void actionPerformed(ActionEvent eventObject) {
+        if(eventObject.getSource() == buttons[0])
+            txField.setText((txField.getText() + "7"));
+        else if(eventObject.getSource() == buttons[1])
+            txField.setText((txField.getText() + "8"));
+        else if(eventObject.getSource() == buttons[2])
+            txField.setText((txField.getText() + "9"));
+        else if(eventObject.getSource() == buttons[3])
+            txField.setText((txField.getText() + "+"));
+        else if(eventObject.getSource() == buttons[4])
+            txField.setText((txField.getText() + "4"));
+        else if(eventObject.getSource() == buttons[5])
+            txField.setText((txField.getText() + "5"));
+        else if(eventObject.getSource() == buttons[6])
+            txField.setText((txField.getText() + "6"));
+        else if(eventObject.getSource() == buttons[7])
+            txField.setText((txField.getText() + "-"));
+        else if(eventObject.getSource() == buttons[8])
+            txField.setText((txField.getText() + "1"));
+        else if(eventObject.getSource() == buttons[9])
+            txField.setText((txField.getText() + "2"));
+        else if(eventObject.getSource() == buttons[10])
+            txField.setText((txField.getText() + "3"));
+        else if(eventObject.getSource() == buttons[11])
+            txField.setText((txField.getText() + "*"));
+        else if(eventObject.getSource() == buttons[12])
+            txField.setText((txField.getText() + "0"));
+        else if(eventObject.getSource() == buttons[13])
+            txField.setText((txField.getText() + "^"));
+        else if(eventObject.getSource() == buttons[14]){
+            int result = expressionEvaluator.eval(txField.getText());
+            txField.setText("");
+            txField.setText(txField.getText()+ result);
+        }
+        else if(eventObject.getSource() == buttons[15])
+            txField.setText((txField.getText() + "/"));
+        else if(eventObject.getSource() == buttons[16])
+            txField.setText((txField.getText() + "("));
+        else if(eventObject.getSource() == buttons[17])
+            txField.setText((txField.getText() + ")"));
+        else if(eventObject.getSource() == buttons[18]){
+            String currentString = txField.getText();
+            if(!currentString.equals(""))
+                txField.setText(currentString.substring(0, currentString.length()-1));
 
-
+        }
+        else
+            txField.setText((""));
     }
 }
